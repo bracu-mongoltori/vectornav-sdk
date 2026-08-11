@@ -1,0 +1,336 @@
+.. _cliDataExportPage:
+
+Data Export
+###########
+
+The Data Export plugin allows the user to export data from a VectorNav unit into various file types, such as a *CSV*, *TXT*, *RINEX*, *IMR*, or *BIN* file. 
+Data can be exported from previously recorded log files as well as directly from a VectorNav unit in real time.
+Additionally, this plugin supports exporting to multiple file formats at once, including exporting any skipped byte data to a separate *BIN* file.
+
+Each of the following exporter types can be obtained from the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` class.
+
+* :class:`DataExport::ExporterAscii <VNSDK::DataExport::ExporterAscii>` - exports to a *TXT* file
+* :class:`DataExport::ExporterCsv <VNSDK::DataExport::ExporterCsv>` - exports to a *CSV* file
+* :class:`DataExport::ExporterSkippedByte <VNSDK::DataExport::ExporterSkippedByte>` - exports to a *BIN* file
+* :class:`DataExport::ExporterRinex <VNSDK::DataExport::ExporterRinex>` - exports to a *RINEX* file
+* :class:`DataExport::ExporterImr <VNSDK::DataExport::ExporterImr>` - exports to a *IMR* file
+
+This Data Export plugin can be used in conjunction with the Logger plugin, which allows users to log all bytes received from the VectorNav unit to a binary file without the parsing of any packets. Any files logged from the Logger plugin can then be exported into the desired file formats using this Data Export plugin. Information on how to log data from a VectorNav unit into a binary file can be found on the :ref:`cliLoggerPage` page.
+
+
+Usage
+=====
+
+There are two examples for the Data Export plugin. 
+One shows how to export data from a previously logged file and the other shows how to log data directly from the sensor.
+
+Exporting from a File
+^^^^^^^^^^^^^^^^^^^^^
+
+When exporting data from a previously recorded log file, a :class:`~VNSDK::Sensor` object must first be created to process the logged data.
+Because the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` class works with raw packets, it does not require the use of the :class:`~VNSDK::CompositeData` class for parsing. 
+Therefore, the :class:`~VNSDK::Sensor` object should be configured with :enum:`Sensor::MeasQueueMode::Off <VNSDK::Sensor::MeasQueueMode::Off>`.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+        :language: c#
+        :start-at: MeasQueueMode pushToCompositeData = MeasQueueMode.Off;
+        :end-at: Sensor sensor = new Sensor(mainBuffer, fbBuffer, pushToCompositeData);
+        :dedent: 12
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+        :language: matlab
+        :start-at: pushToCompositeData = MeasQueueMode.Off;
+        :end-at: sensor = Sensor(pushToCompositeData);
+
+The desired :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object should then be created.
+The :class:`DataExport::ExporterAscii <VNSDK::DataExport::ExporterAscii>` class can only export logged ASCII output messages from the VectorNav unit, while the :class:`DataExport::ExporterCsv <VNSDK::DataExport::ExporterCsv>` class can export both ASCII and binary output messages. 
+The :class:`DataExport::ExporterSkippedByte <VNSDK::DataExport::ExporterSkippedByte>` class exports bytes that do not belong to any valid packet format,  which is useful for debugging communication issues and data corruption. Once the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object is created, the :class:`~VNSDK::Sensor` object must subscribe to the exporter's message queue.
+
+.. tab:: ASCII
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: DataExport.ExporterAscii asciiExporter = new DataExport.ExporterAscii(outputDirectory, DataExport.PacketQueueMode.Retry);
+            :end-at: sensor.SubscribeToMessage(asciiExporter.GetManagedQueuePointer(), "VN");
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: asciiExporter = VNSDK.("DataExport+ExporterAscii")(outputDirectory, VNSDK.("DataExport+PacketQueueMode").Retry);
+            :end-at: sensor.SubscribeToMessage(asciiExporter.GetManagedQueuePointer(),"VN");
+
+.. tab::  CSV
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: DataExport.ExporterCsv csvExporter = new DataExport.ExporterCsv(outputDirectory, DataExport.PacketQueueMode.Retry);
+            :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), SyncByte.FA);
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: csvExporter = VNSDK.("DataExport+ExporterCsv")(outputDirectory, VNSDK.("DataExport+PacketQueueMode").Retry);
+            :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), SyncByte.FA);
+
+.. tab::  Skipped Bytes
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: DataExport.ExporterSkippedByte skippedByteExporter
+            :end-at: sensor.SubscribeToMessage
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: skippedByteExporter = VNSDK.("DataExport+ExporterSkippedByte")(outputDirectory);
+            :end-at: sensor.SubscribeToMessage(skippedByteExporter.GetManagedQueuePointer(), SyncByte.None);
+
+Before connecting :class:`~VNSDK::Sensor` object to the file, the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object must be started. This will kick off a separate thread for the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object.
+
+.. tab:: ASCII
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: asciiExporter.Start();
+            :end-at: asciiExporter.Start();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: asciiExporter.Start();
+            :end-at: asciiExporter.Start();
+
+.. tab::  CSV
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: csvExporter.Start();
+            :end-at: csvExporter.Start();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: csvExporter.Start();
+            :end-at: csvExporter.Start();
+
+.. tab::  Skipped Bytes
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: skippedByteExporter.Start();
+            :end-at: skippedByteExporter.Start();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: skippedByteExporter.Start();
+            :end-at: skippedByteExporter.Start();
+
+Once the different :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` has been started, the :class:`~VNSDK::Sensor` object should be used to connect to the log file, which will begin the exporting process.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+        :language: c#
+        :start-at: sensor.Connect(filePath);
+        :end-at: sensor.Connect(filePath);
+        :dedent: 12
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+        :language: matlab
+        :start-at: sensor.Connect(filePath);
+        :end-at: sensor.Connect(filePath);
+
+Because the file is processsed in a background thread, the AsyncError queue should be monitored to detect when the end of the file is reached.
+A ``FileReadFailed`` native error will be returned, which will throw a :class:`~VNSDK::VnFileException`, indicates that the end of the file has been reached and processing is complete.
+The :class:`~VNSDK::Sensor` object can then be disconnected from the log file.
+
+.. tab:: ASCII
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: asciiExporter.Stop();
+            :end-at: asciiExporter.Stop();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: asciiExporter.Stop();
+            :end-at: asciiExporter.Stop();
+
+.. tab::  CSV
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: csvExporter.Stop();
+            :end-at: csvExporter.Stop();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: csvExporter.Stop();
+            :end-at: csvExporter.Stop();
+
+.. tab::  Skipped Bytes
+
+    .. tab:: C#
+
+        .. literalinclude:: ../../../cs/examples/DataExport/FromFile/DataExportFromFile.cs
+            :language: c#
+            :start-at: skippedByteExporter.Stop();
+            :end-at: skippedByteExporter.Stop();
+            :dedent: 12
+
+    .. tab::  MATLAB
+
+        .. literalinclude:: ../../../matlab/examples/DataExport/FromFile/DataExportFromFile.m
+            :language: matlab
+            :start-at: skippedByteExporter.Stop();
+            :end-at: skippedByteExporter.Stop();
+
+Exporting in Real-Time
+^^^^^^^^^^^^^^^^^^^^^^
+
+When using the Data Export plugin to export data in real time from a VectorNav unit, it is first necessary to create a :class:`~VNSDK::Sensor` object and connect to the VectorNav unit, such as by using the :func:`~VNSDK::Sensor::AutoConnect` method.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromSensor/DataExportFromSensor.cs
+        :language: c#
+        :start-at: Sensor sensor = new Sensor();
+        :end-at: Console.WriteLine($"Connected to {portName} at {sensor.ConnectedBaudRate()}");
+        :dedent: 12
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: sensor = Sensor();
+        :end-at: sensor = Sensor();
+        :dedent: 4
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: try
+        :end-at: fprintf('Connected to %s at %s\n', sensor.ConnectedPortName(), sensor.ConnectedBaudRate())
+
+Once the VectorNav unit is connected, the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object should be created.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromSensor/DataExportFromSensor.cs
+        :language: c#
+        :start-at: DataExport.ExporterCsv csvExporter = new DataExport.ExporterCsv(outputDirectory);
+        :end-at: DataExport.ExporterCsv csvExporter = new DataExport.ExporterCsv(outputDirectory);
+        :dedent: 12
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: csvExporter = VNSDK.("DataExport+ExporterCsv")(outputDirectory);
+        :end-at: csvExporter = VNSDK.("DataExport+ExporterCsv")(outputDirectory);
+
+In order for the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object to export the desired messages from the sensor, the :class:`~VNSDK::Sensor` object must subscribe to the exporter's message queue.
+In the example below, the :class:`DataExport::ExporterCsv <VNSDK::DataExport::ExporterCsv>` object is used to filter for binary packets with an "0xFA" sync byte.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromSensor/DataExportFromSensor.cs
+        :language: c#
+        :start-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), "VN", AsciiSubscriberFilterType.StartsWith);
+        :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), "VN", AsciiSubscriberFilterType.StartsWith);
+        :dedent: 16
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), "VN", VNSDK.AsciiSubscriberFilterType.StartsWith);
+        :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), "VN", VNSDK.AsciiSubscriberFilterType.StartsWith);
+        :dedent: 4
+
+The :class:`DataExport::ExporterCsv <VNSDK::DataExport::ExporterCsv>` object can subscribe to multiple message types at once.
+For example, while subscribing to the binary packets with an "0xFA" sync byte, the :class:`DataExport::ExporterCsv <VNSDK::DataExport::ExporterCsv>` object can also subscribe to ASCII messages that begin with "VN".
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromSensor/DataExportFromSensor.cs
+        :language: c#
+        :start-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), new BinaryOutputMeasurements(), FaSubscriberFilterType.AnyMatch);
+        :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), new BinaryOutputMeasurements(), FaSubscriberFilterType.AnyMatch);
+        :dedent: 16
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), VNSDK.BinaryOutputMeasurements(), FaSubscriberFilterType.AnyMatch);
+        :end-at: sensor.SubscribeToMessage(csvExporter.GetManagedQueuePointer(), VNSDK.BinaryOutputMeasurements(), FaSubscriberFilterType.AnyMatch);
+        :dedent: 4
+
+The :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object has now been set up, but has not  yet begun exporting data. 
+To begin exporting the subscribed messages, the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object must be started.
+After all desired data has been exported from the VectorNav unit, the :class:`DataExport::Exporter <VNSDK::DataExport::Exporter>` object must be stopped. This ensures all buffered data is exported to the output file.
+
+.. tip::
+   Ensure the VectorNav unit is configured to output the desired data before starting the exporter.
+
+.. tab:: C#
+
+    .. literalinclude:: ../../../cs/examples/DataExport/FromSensor/DataExportFromSensor.cs
+        :language: c#
+        :start-at: if (csvExporter.Start())
+        :end-at: csvExporter.Stop();
+        :dedent: 12
+
+.. tab::  MATLAB
+
+    .. literalinclude:: ../../../matlab/examples/DataExport/FromSensor/DataExportFromSensor.m
+        :language: matlab
+        :start-at: if csvExporter.Start()
+        :end-at: csvExporter.Stop();
+
+API
+===
+
+The CLI API for the Data Export plugin is modeled from the C++ API which can be found here:
+:ref:`DataExport<plugins_cpp:namespace_VN__DataExport>`

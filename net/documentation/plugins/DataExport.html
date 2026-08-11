@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Export &#8212; VectorNav SDK  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css?v=36acb9b5" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a6d58504" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Firmware Programmer" href="FirmwareProgrammer.html" />
+    <link rel="prev" title="Calibration (BETA)" href="Calibration.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FirmwareProgrammer.html" title="Firmware Programmer"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Calibration.html" title="Calibration (BETA)"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../Documentation.html">VectorNav SDK  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data Export</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="data-export">
+<span id="clidataexportpage"></span><h1>Data Export<a class="headerlink" href="#data-export" title="Link to this heading">¶</a></h1>
+<p>The Data Export plugin allows the user to export data from a VectorNav unit into various file types, such as a <em>CSV</em>, <em>TXT</em>, <em>RINEX</em>, <em>IMR</em>, or <em>BIN</em> file.
+Data can be exported from previously recorded log files as well as directly from a VectorNav unit in real time.
+Additionally, this plugin supports exporting to multiple file formats at once, including exporting any skipped byte data to a separate <em>BIN</em> file.</p>
+<p>Each of the following exporter types can be obtained from the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> class.</p>
+<ul class="simple">
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterAscii</span></code> - exports to a <em>TXT</em> file</p></li>
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterCsv</span></code> - exports to a <em>CSV</em> file</p></li>
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterSkippedByte</span></code> - exports to a <em>BIN</em> file</p></li>
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterRinex</span></code> - exports to a <em>RINEX</em> file</p></li>
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterImr</span></code> - exports to a <em>IMR</em> file</p></li>
+</ul>
+<p>This Data Export plugin can be used in conjunction with the Logger plugin, which allows users to log all bytes received from the VectorNav unit to a binary file without the parsing of any packets. Any files logged from the Logger plugin can then be exported into the desired file formats using this Data Export plugin. Information on how to log data from a VectorNav unit into a binary file can be found on the <a class="reference internal" href="Logger.html#cliloggerpage"><span class="std std-ref">Logger</span></a> page.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
+<p>There are two examples for the Data Export plugin.
+One shows how to export data from a previously logged file and the other shows how to log data directly from the sensor.</p>
+<section id="exporting-from-a-file">
+<h3>Exporting from a File<a class="headerlink" href="#exporting-from-a-file" title="Link to this heading">¶</a></h3>
+<p>When exporting data from a previously recorded log file, a <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object must first be created to process the logged data.
+Because the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> class works with raw packets, it does not require the use of the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_composite_data.html#_CPPv4N5VNSDK13CompositeDataE" title="VNSDK::CompositeData"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CompositeData</span></code></a> class for parsing.
+Therefore, the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object should be configured with <code class="xref cpp cpp-enum docutils literal notranslate"><span class="pre">Sensor::MeasQueueMode::Off</span></code>.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">MeasQueueMode</span><span class="w"> </span><span class="n">pushToCompositeData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasQueueMode</span><span class="p">.</span><span class="n">Off</span><span class="p">;</span><span class="w">  </span><span class="c1">// do not parse to CompositeData because that is not needed by exporters</span>
+<span class="n">ByteBuffer</span><span class="w"> </span><span class="n">mainBuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">(</span><span class="mi">65536</span><span class="p">);</span>
+<span class="n">ByteBuffer</span><span class="w"> </span><span class="n">fbBuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">(</span><span class="mi">2048</span><span class="p">);</span>
+
+<span class="n">Sensor</span><span class="w"> </span><span class="n">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Sensor</span><span class="p">(</span><span class="n">mainBuffer</span><span class="p">,</span><span class="w"> </span><span class="n">fbBuffer</span><span class="p">,</span><span class="w"> </span><span class="n">pushToCompositeData</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">MATLAB</label><div class="tab-content docutils container">
+</div>
+</div>
+<p>The desired <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object should then be created.
+The <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterAscii</span></code> class can only export logged ASCII output messages from the VectorNav unit, while the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterCsv</span></code> class can export both ASCII and binary output messages.
+The <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterSkippedByte</span></code> class exports bytes that do not belong to any valid packet format,  which is useful for debugging communication issues and data corruption. Once the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object is created, the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object must subscribe to the exporter’s message queue.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">ASCII</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterAscii</span><span class="w"> </span><span class="n">asciiExporter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterAscii</span><span class="p">(</span><span class="n">outputDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">PacketQueueMode</span><span class="p">.</span><span class="n">Retry</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;VN&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">asciiExporter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+ExporterAscii&quot;</span><span class="p">)(</span><span class="n">outputDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+PacketQueueMode&quot;</span><span class="p">).</span><span class="n">Retry</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="s">&quot;VN&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">CSV</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterCsv</span><span class="w"> </span><span class="n">csvExporter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterCsv</span><span class="p">(</span><span class="n">outputDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">PacketQueueMode</span><span class="p">.</span><span class="n">Retry</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;VN&quot;</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="n">SyncByte</span><span class="p">.</span><span class="n">FA</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+ExporterCsv&quot;</span><span class="p">)(</span><span class="n">outputDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+PacketQueueMode&quot;</span><span class="p">).</span><span class="n">Retry</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;VN&quot;</span><span class="p">);</span>
+
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="n">SyncByte</span><span class="p">.</span><span class="n">FA</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--3" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--3">Skipped Bytes</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterSkippedByte</span><span class="w"> </span><span class="n">skippedByteExporter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterSkippedByte</span><span class="p">(</span><span class="n">outputDirectory</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="n">SyncByte</span><span class="p">.</span><span class="n">None</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">skippedByteExporter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+ExporterSkippedByte&quot;</span><span class="p">)(</span><span class="n">outputDirectory</span><span class="p">);</span>
+<span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="n">SyncByte</span><span class="p">.</span><span class="n">None</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Before connecting <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object to the file, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object must be started. This will kick off a separate thread for the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">ASCII</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">CSV</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--8-input--3" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--3">Skipped Bytes</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Once the different <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> has been started, the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object should be used to connect to the log file, which will begin the exporting process.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">filePath</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">Connect</span><span class="p">(</span><span class="n">filePath</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the file is processsed in a background thread, the AsyncError queue should be monitored to detect when the end of the file is reached.
+A <code class="docutils literal notranslate"><span class="pre">FileReadFailed</span></code> native error will be returned, which will throw a <a class="reference internal" href="../api/exceptions_api.html#_CPPv4N5VNSDK15VnFileExceptionE" title="VNSDK::VnFileException"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VnFileException</span></code></a>, indicates that the end of the file has been reached and processing is complete.
+The <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object can then be disconnected from the log file.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">ASCII</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">asciiExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">CSV</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--3" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--3">Skipped Bytes</label><div class="tab-content docutils container">
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">skippedByteExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="exporting-in-real-time">
+<h3>Exporting in Real-Time<a class="headerlink" href="#exporting-in-real-time" title="Link to this heading">¶</a></h3>
+<p>When using the Data Export plugin to export data in real time from a VectorNav unit, it is first necessary to create a <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object and connect to the VectorNav unit, such as by using the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6Sensor11AutoConnectEP6String" title="VNSDK::Sensor::AutoConnect"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">AutoConnect()</span></code></a> method.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">Sensor</span><span class="w"> </span><span class="n">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Sensor</span><span class="p">();</span>
+<span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sensor</span><span class="p">.</span><span class="n">AutoConnect</span><span class="p">(</span><span class="n">portName</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">VnException</span><span class="w"> </span><span class="n">latestError</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;{latestError.Message} encountered when connecting to {portName}.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;Connected to {portName} at {sensor.ConnectedBaudRate()}&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Sensor</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">try</span>
+<span class="w">    </span><span class="n">sensor</span><span class="p">.</span><span class="n">AutoConnect</span><span class="p">(</span><span class="n">portName</span><span class="p">);</span>
+<span class="k">catch</span><span class="w"> </span><span class="n">latestError</span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;Error encountered when connecting to %s.\n%s\n&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">portName</span><span class="p">,</span><span class="w"> </span><span class="n">latestError</span><span class="p">.</span><span class="n">message</span><span class="p">);</span>
+<span class="k">end</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Connected to %s at %s\n&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">sensor</span><span class="p">.</span><span class="n">ConnectedPortName</span><span class="p">(),</span><span class="w"> </span><span class="n">sensor</span><span class="p">.</span><span class="n">ConnectedBaudRate</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once the VectorNav unit is connected, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object should be created.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterCsv</span><span class="w"> </span><span class="n">csvExporter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataExport</span><span class="p">.</span><span class="n">ExporterCsv</span><span class="p">(</span><span class="n">outputDirectory</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">csvExporter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.(</span><span class="s">&quot;DataExport+ExporterCsv&quot;</span><span class="p">)(</span><span class="n">outputDirectory</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order for the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object to export the desired messages from the sensor, the <a class="reference internal" href="../_api/class_v_n_s_d_k_1_1_sensor.html#_CPPv4N5VNSDK6SensorE" title="VNSDK::Sensor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Sensor</span></code></a> object must subscribe to the exporter’s message queue.
+In the example below, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterCsv</span></code> object is used to filter for binary packets with an “0xFA” sync byte.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;VN&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">AsciiSubscriberFilterType</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;VN&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.</span><span class="n">AsciiSubscriberFilterType</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterCsv</span></code> object can subscribe to multiple message types at once.
+For example, while subscribing to the binary packets with an “0xFA” sync byte, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::ExporterCsv</span></code> object can also subscribe to ASCII messages that begin with “VN”.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BinaryOutputMeasurements</span><span class="p">(),</span><span class="w"> </span><span class="n">FaSubscriberFilterType</span><span class="p">.</span><span class="n">AnyMatch</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span><span class="p">.</span><span class="n">SubscribeToMessage</span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">GetManagedQueuePointer</span><span class="p">(),</span><span class="w"> </span><span class="n">VNSDK</span><span class="p">.</span><span class="n">BinaryOutputMeasurements</span><span class="p">(),</span><span class="w"> </span><span class="n">FaSubscriberFilterType</span><span class="p">.</span><span class="n">AnyMatch</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object has now been set up, but has not  yet begun exporting data.
+To begin exporting the subscribed messages, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object must be started.
+After all desired data has been exported from the VectorNav unit, the <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DataExport::Exporter</span></code> object must be stopped. This ensures all buffered data is exported to the output file.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Ensure the VectorNav unit is configured to output the desired data before starting the exporter.</p>
+</div>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">C#</label><div class="tab-content docutils container">
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">())</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Error: Failed to start logging to CSV file.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;Logging to {outputDirectory}&quot;</span><span class="p">);</span>
+
+<span class="n">DateTime</span><span class="w"> </span><span class="n">endTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">.</span><span class="n">AddSeconds</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">endTime</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="n">Threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Handle asynchronous errors</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sensor</span><span class="p">.</span><span class="n">ThrowIfAsyncError</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">VnException</span><span class="w"> </span><span class="n">asyncError</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&quot;Received async error: {asyncError.Message}&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">csvExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">MATLAB</label><div class="tab-content docutils container">
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="n">csvExporter</span><span class="p">.</span><span class="n">Start</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;Error: Failed to start logging to CSV file.&#39;</span><span class="p">);</span>
+<span class="k">end</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Logging to %s\n&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">outputDirectory</span><span class="p">);</span>
+
+<span class="n">secondsToRun</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="nb">tic</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="nb">toc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">secondsToRun</span>
+<span class="w">    </span><span class="nb">pause</span><span class="p">(</span><span class="mf">0.001</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c">% Handle async errors</span>
+<span class="w">    </span><span class="k">try</span>
+<span class="w">        </span><span class="n">sensor</span><span class="p">.</span><span class="n">ThrowIfAsyncError</span><span class="p">();</span>
+<span class="w">    </span><span class="k">catch</span><span class="w"> </span><span class="n">asyncError</span>
+<span class="w">        </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Received async error: %s\n&#39;</span><span class="p">,</span><span class="w">  </span><span class="n">asyncError</span><span class="p">.</span><span class="n">message</span><span class="p">);</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">csvExporter</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading">¶</a></h2>
+<p>The CLI API for the Data Export plugin is modeled from the C++ API which can be found here:
+<a class="reference external" href="../../../../../cpp/documentation/_api/namespace_VN__DataExport.html#namespace-vn-dataexport" title="(in VectorNav SDK)"><span class="xref std std-ref">DataExport</span></a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="../Documentation.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pages/MigrationGuide.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/KeyFunctionality.html">Key Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/api_index.html">VNSDK API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Calibration.html">Calibration (<em>BETA</em>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareProgrammer.html">Firmware Programmer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Logger.html">Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Math.html">Math (<em>BETA</em>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RegisterScan.html">Register Scan</a></li>
+</ul>
+</li>
+</ul>
+</div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="Calibration.html"
+                          title="Previous page">&larr; Calibration (<em>BETA</em>)</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="FirmwareProgrammer.html"
+                          title="Next page">&rarr; Firmware Programmer</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/plugins/DataExport.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="FirmwareProgrammer.html" title="Firmware Programmer"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Calibration.html" title="Calibration (BETA)"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../Documentation.html">VectorNav SDK  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >Plugins</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data Export</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, VectorNav Technologies.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

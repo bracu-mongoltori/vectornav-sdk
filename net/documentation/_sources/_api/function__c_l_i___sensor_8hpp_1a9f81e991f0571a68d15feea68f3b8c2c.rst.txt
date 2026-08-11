@@ -1,0 +1,14 @@
+.. _exhale_function__c_l_i___sensor_8hpp_1a9f81e991f0571a68d15feea68f3b8c2c:
+
+Function VNSDK::SerialTcpChangeBaudRateDelegate
+===============================================
+
+- Defined in :ref:`file_documentation__include_vectornav_CLI_Sensor.hpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: VNSDK::SerialTcpChangeBaudRateDelegate(UInt32)
+   :project: VectorNav SDK

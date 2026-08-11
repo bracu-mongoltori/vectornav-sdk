@@ -1,0 +1,184 @@
+.. _pythonDataExportPage:
+
+Data Export
+###########
+
+The Data Export plugin allows the user to export data from a VectorNav unit into various file types, such as a *CSV*, *TXT*, *RINEX*, *IMR*, or *BIN* file. 
+Data can be exported from previously recorded log files as well as directly from a VectorNav unit in real time.
+Additionally, this plugin supports exporting to multiple file formats at once, including exporting any skipped byte data to a separate *BIN* file.
+
+Each of the following exporter types can be obtained from the :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` class.
+
+* :class:`DataExport.ExporterAscii <vectornav.DataExport.ExporterAscii>` - exports to a *TXT* file
+* :class:`DataExport.ExporterCsv <vectornav.DataExport.ExporterCsv>` - exports to a *CSV* file
+* :class:`DataExport.ExporterSkippedByte <vectornav.DataExport.ExporterSkippedByte>` - exports to a *BIN* file
+* :class:`DataExport.ExporterRinex <vectornav.DataExport.ExporterRinex>` - exports to a *RINEX* file
+* :class:`DataExport.ExporterImr <vectornav.DataExport.ExporterImr>` - exports to a *IMR* file
+
+This Data Export plugin can be used in conjunction with the Logger plugin, which allows users to log all bytes received from the VectorNav unit to a binary file without the parsing of any packets. Any files logged from the Logger plugin can then be exported into the desired file formats using this Data Export plugin. Information on how to log data from a VectorNav unit into a binary file can be found on the :ref:`pythonLoggerPage` page.
+
+Usage
+=====
+
+There are two examples for the Data Export plugin. 
+One shows how to export data from a previously logged file and the other shows how to log data directly from the sensor.
+
+Exporting from a File
+^^^^^^^^^^^^^^^^^^^^^
+
+When exporting data from a previously recorded log file, a :py:class:`~vectornav.Sensor` object must first be created to process the logged data.
+Because the :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` class works with raw packets, it does not require the use of the :py:class:`~vectornav.CompositeData` class for parsing. 
+Therefore, the :py:class:`~vectornav.Sensor` object should be configured with :class:`Sensor.MeasQueueMode.Off <vectornav.Sensor.MeasQueueMode.Off>`.
+
+.. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+   :language: python
+   :start-at: pushToCompositeData
+   :end-at: Sensor(mainBuffer, fbBuffer, pushToCompositeData)
+   :dedent: 4
+
+The desired :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object should then be created.
+The :py:class:`DataExport.ExporterAscii <vectornav.DataExport.ExporterAscii>` class can only export logged ASCII output messages from the VectorNav unit, while the :py:class:`DataExport.ExporterCsv <vectornav.DataExport.ExporterCsv>` class can export both ASCII and binary output messages. 
+The :py:class:`DataExport.ExporterSkippedByte <vectornav.DataExport.ExporterSkippedByte>` class exports bytes that do not belong to any valid packet format,  which is useful for debugging communication issues and data corruption. Once the :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object is created, the :py:class:`~vectornav.Sensor` object must subscribe to the exporter's message queue.
+
+.. tab:: ASCII
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: asciiExporter = DataExport.ExporterAscii(outputPath, DataExport.PacketQueueMode.Retry)
+      :end-at: sensor.subscribeToMessage(asciiExporter.getQueuePtr(), "VN", Sensor.AsciiSubscriberFilterType.StartsWith)
+      :dedent: 4
+
+.. tab::  CSV
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: csvExporter = DataExport.ExporterCsv(outputPath, DataExport.PacketQueueMode.Retry)
+      :end-at: sensor.subscribeToMessage(csvExporter.getQueuePtr(), "VN", Sensor.AsciiSubscriberFilterType.StartsWith)
+      :dedent: 4
+
+.. tab::  Skipped Bytes
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: skippedByteExporter = DataExport.ExporterSkippedByte(outputPath, DataExport.PacketQueueMode.Retry)
+      :end-at: sensor.subscribeToMessage
+      :dedent: 4
+
+Before connecting :py:class:`~vectornav.Sensor` object to the file, the :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object must be started. This will kick off a separate thread for the :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object.
+
+.. tab:: ASCII
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: asciiExporter.start()
+      :end-at: asciiExporter.start()
+      :dedent: 4
+
+.. tab:: CSV
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: csvExporter.start()
+      :end-at: csvExporter.start()
+      :dedent: 4
+
+.. tab:: Skipped Bytes
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: skippedByteExporter.start()
+      :end-at: skippedByteExporter.start()
+      :dedent: 4
+
+Once the different :py:class:`DataExport.Exporter <vectornav.DataExport.Exporter>` has been started, the :py:class:`~vectornav.Sensor` object should be used to connect to the log file, which will begin the exporting process.
+
+.. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+   :language: python
+   :start-at: sensor.connect(filePath)
+   :end-at: sensor.connect(filePath)
+   :dedent: 4
+
+Because the file is processsed in a background thread, the AsyncError queue should be monitored to detect when the end of the file is reached.
+A ``FileReadFailed`` native error will be returned, which will throw a :py:class:`~vectornav.VnFileException`, indicates that the end of the file has been reached and processing is complete.
+The :py:class:`~vectornav.Sensor` object can then be disconnected from the log file.
+
+.. tab:: ASCII
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: asciiExporter.stop()
+      :end-at: asciiExporter.stop()
+      :dedent: 4
+
+.. tab:: CSV
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: csvExporter.stop()
+      :end-at: csvExporter.stop()
+      :dedent: 4
+
+.. tab:: Skipped Bytes
+
+   .. literalinclude:: ../../examples/data_export/from_file/data_export_from_file.py
+      :language: python
+      :start-at: skippedByteExporter.stop()
+      :end-at: skippedByteExporter.stop()
+      :dedent: 4
+
+Exporting in Real-Time
+^^^^^^^^^^^^^^^^^^^^^^
+
+When using the Data Export plugin to export data in real time from a VectorNav unit, it is first necessary to create a :class:`~vectornav.Sensor` object and connect to the VectorNav unit, such as by using the :func:`~vectornav.Sensor.AutoConnect` method.
+
+.. literalinclude:: ../../examples/data_export/from_sensor/data_export_from_sensor.py
+   :language: python
+   :start-at: sensor = Sensor()
+   :end-at: print(f"Connected to {portName} at {sensor.connectedBaudRate()}")
+   :dedent: 4
+
+
+Once the VectorNav unit is connected, the :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object should be created.
+
+.. literalinclude:: ../../examples/data_export/from_sensor/data_export_from_sensor.py
+   :language: python
+   :start-at: csvExporter = DataExport.ExporterCsv(outputDirectory)
+   :end-at: csvExporter = DataExport.ExporterCsv(outputDirectory)
+   :dedent: 4
+
+In order for the :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object to export the desired messages from the sensor, the :class:`~vectornav.Sensor` object must subscribe to the exporter's message queue.
+In the example below, the :class:`DataExport.ExporterCsv <vectornav.DataExport.ExporterCsv>` object is used to filter for binary packets with an "0xFA" sync byte.
+
+.. literalinclude:: ../../examples/data_export/from_sensor/data_export_from_sensor.py
+   :language: python
+   :start-at: sensor.subscribeToMessage(csvExporter.getQueuePtr(), "VN", Sensor.AsciiSubscriberFilterType.StartsWith)
+   :end-at: sensor.subscribeToMessage(csvExporter.getQueuePtr(), "VN", Sensor.AsciiSubscriberFilterType.StartsWith)
+   :dedent: 8
+
+The :class:`DataExport.ExporterCsv <vectornav.DataExport.ExporterCsv>` object can subscribe to multiple message types at once.
+For example, while subscribing to the binary packets with an "0xFA" sync byte, the :class:`DataExport.ExporterCsv <vectornav.DataExport.ExporterCsv>` object can also subscribe to ASCII messages that begin with "VN".
+
+.. literalinclude:: ../../examples/data_export/from_sensor/data_export_from_sensor.py
+   :language: python
+   :start-at: sensor.subscribeToMessage(csvExporter.getQueuePtr(), Sensor.SyncByte.FA)
+   :end-at: sensor.subscribeToMessage(csvExporter.getQueuePtr(), Sensor.SyncByte.FA)
+   :dedent: 8
+
+The :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object has now been set up, but has not  yet begun exporting data. 
+To begin exporting the subscribed messages, the :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object must be started.
+After all desired data has been exported from the VectorNav unit, the :class:`DataExport.Exporter <vectornav.DataExport.Exporter>` object must be stopped. This ensures all buffered data is exported to the output file.
+
+.. tip::
+   Ensure the VectorNav unit is configured to output the desired data before starting the exporter.
+
+.. literalinclude:: ../../examples/data_export/from_sensor/data_export_from_sensor.py
+   :language: python
+   :start-at: csvExporter.start()
+   :end-at: csvExporter.stop()
+   :dedent: 4
+
+API
+===
+
+The Python API for the DataExport plugin is modeled from the C++ API which can be found here:
+:ref:`DataExport <plugins_cpp:namespace_VN__DataExport>`

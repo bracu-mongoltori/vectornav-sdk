@@ -1,0 +1,95 @@
+# VN-200T-CR standing config: maximum baud, maximum output rate.
+# Stock VectorNav config saved alongside as vectornav.yaml.orig.
+#
+# Every value below was verified by measurement on this unit (S/N 0100062351, FW 2.0.0.1)
+# over its FTDI USB-RS232 cable. Loss was measured from gaps in the sensor's own
+# timeStartup counter, which catches both wire corruption and SDK queue overflow.
+#
+#   BaudRate 921600   sensor ceiling (Registers.hpp BaudRate enum). 0 drops.
+#   BO1      800 Hz   the IMU's native rate. rateDivisor 1.
+#                     commonField 0x0139 = timeStartup|ypr|quaternion|angularRate|accel
+#                     ~60 B/packet -> 48 kB/s, 52% of the 92 kB/s available at 921600 8N1.
+#                     Measured: 16000 samples / 20 s, 0 drops, 0 dupes.
+#   BO2      5 Hz     GNSS group: fix type (RTK float/fixed decode), sat count,
+#                     position/velocity accuracy, DOP. 5 Hz is the receiver's own
+#                     solution rate (reg 55 Rate), so faster would only repeat values.
+#
+# Why not the full common group at 800 Hz: commonField 0x7FFF is ~198 B, so 800 Hz needs
+# 158 kB/s and the sensor rejects the write with InsufficientBaudRate. 0x7FFF tops out at
+# 400 Hz (measured clean, 8001 samples / 20 s). Pick one:
+#   800 Hz + 0x0139  (this file)   - orientation, rates, accel
+#   400 Hz + 0x7FFF                - adds mag/pressure/temperature, INS status, pos/vel, deltas
+#
+# asyncMode 1 = serial1 only. Stock uses 3 (both ports), which makes the sensor bill the
+# packet against serial2's baud as well and trips InsufficientBaudRate far earlier.
+#
+# syncOutMode 6 / syncOutPolarity 1 are this unit's own values, preserved. The stock config
+# writes zeros here, which silently repurposes the sync output pin.
+#
+# NOTE: none of this is persisted to the sensor's NVM -- no WriteSettings ($VNWNV) is issued.
+# A power cycle returns the unit to 115200 baud with its previous output config.
+vectornav:
+  ros__parameters:
+    port: "/dev/ttyUSB1"
+    BaudRate: 921600
+
+    # ASCII async output off; everything arrives as binary output messages.
+    AsyncDataOutputType: 0
+    AsyncDataOutputTypeSerialPort: 1
+    AsyncDataOutputFrequency: 20
+    AsyncDataOutputFrequencySerialPort: 1
+
+    syncInMode: 3
+    syncInEdge: 0
+    syncInSkipFactor: 0
+    syncOutMode: 6
+    syncOutPolarity: 1
+    syncOutSkipFactor: 0
+    syncOutPulseWidth_ns: 100000000
+
+    asciiAppendCount: 0
+    asciiAppendStatus: 0
+    spiAppendCount: 0
+    spiAppendStatus: 0
+    asciiChecksum: 1
+    spiChecksum: 0
+    errorMode: 1
+
+    BO1:
+      asyncMode: 1
+      rateDivisor: 1           # 800 Hz IMU / 1 = 800 Hz
+      commonField: 0x0139      # timeStartup|ypr|quaternion|angularRate|accel
+      timeField: 0x0000
+      imuField: 0x0000
+      gpsField: 0x0000
+      attitudeField: 0x0000
+      insField: 0x0000
+      gps2Field: 0x0000
+
+    BO2:
+      asyncMode: 1
+      rateDivisor: 160         # 800 Hz IMU / 160 = 5 Hz
+      commonField: 0x0000
+      timeField: 0x0000
+      imuField: 0x0000
+      # GPS1TOW|GPS1WEEK|NUMSATS|FIX|POSLLA|VELNED|POSUNCERTAINTY|VELUNCERTAINTY|DOP|STATUS
+      gpsField: 0x226BE
+      attitudeField: 0x0000
+      insField: 0x0000
+      gps2Field: 0x0000
+
+    BO3:
+      asyncMode: 0
+      rateDivisor: 0
+      commonField: 0x0000
+      timeField: 0x0000
+      imuField: 0x0000
+      gpsField: 0x0000
+      attitudeField: 0x0000
+      insField: 0x0000
+      gps2Field: 0x0000
+
+    frame_id: "vectornav"
+    antennaAOffset: [0.0, 0.0, 0.0]
+    compassBaseline: [1.0, 0.0, 0.0]
+    compassBaselineU: [0.025, 0.025, 0.025]

@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exceptions API &#8212; VectorNav SDK  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/cloud.css?v=36acb9b5" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a6d58504" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+
+    
+    
+     
+        <script src="../_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="../_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plugins" href="../plugins/index.html" />
+    <link rel="prev" title="CompositeData" href="composite_data_api.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../plugins/index.html" title="Plugins"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="composite_data_api.html" title="CompositeData"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../Documentation.html">VectorNav SDK  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">VNSDK API</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Exceptions API</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="exceptions-api">
+<h1>Exceptions API<a class="headerlink" href="#exceptions-api" title="Link to this heading">¶</a></h1>
+<p>These exception classes are thrown when a corresponding error code is returned from native code.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnException</span></span><a class="headerlink" href="#vectornav.VnException" title="Link to this definition">¶</a></dt>
+<dd><p>This is the top-level exception class used by the SDK.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnSynchronousException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnSynchronousException</span></span><a class="headerlink" href="#vectornav.VnSynchronousException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">SerialBufferOverflow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="n">InvalidChecksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
+<span class="n">InvalidCommand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
+<span class="n">NotEnoughParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
+<span class="n">TooManyParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
+<span class="n">InvalidParameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
+<span class="n">InvalidRegister</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+<span class="n">UnauthorizedAccess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span>
+<span class="n">InsufficientBaudRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0C</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnAsynchronousException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnAsynchronousException</span></span><a class="headerlink" href="#vectornav.VnAsynchronousException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">HardFault</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="n">WatchdogReset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0A</span><span class="p">,</span>
+<span class="n">OutputBufferOverflow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0B</span><span class="p">,</span>
+<span class="n">ErrorBufferOverflow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnCommandProcessorException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnCommandProcessorException</span></span><a class="headerlink" href="#vectornav.VnCommandProcessorException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">CommandResent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">301</span><span class="p">,</span>
+<span class="n">CommandQueueFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">302</span><span class="p">,</span>
+<span class="n">ResponseTimeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">303</span><span class="p">,</span>
+<span class="n">ReceivedUnexpectedMessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">304</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnSensorException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnSensorException</span></span><a class="headerlink" href="#vectornav.VnSensorException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">MeasurementQueueFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span>
+<span class="n">PrimaryBufferFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">601</span><span class="p">,</span>
+<span class="n">MessageSubscriberCapacityReached</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">603</span><span class="p">,</span>
+<span class="n">ReceivedInvalidResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">604</span><span class="p">,</span>
+<span class="n">InvalidAccessPrimaryBuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">606</span><span class="p">,</span>
+<span class="n">BufferFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">607</span><span class="p">,</span>
+<span class="n">AlreadyConnected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">608</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnSerialException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnSerialException</span></span><a class="headerlink" href="#vectornav.VnSerialException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">InvalidPortName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">700</span><span class="p">,</span>
+<span class="n">AccessDenied</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">701</span><span class="p">,</span>
+<span class="n">SerialPortClosed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">702</span><span class="p">,</span>
+<span class="n">UnsupportedBaudRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">703</span><span class="p">,</span>
+<span class="n">SerialReadFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">705</span><span class="p">,</span>
+<span class="n">SerialWriteFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">706</span><span class="p">,</span>
+<span class="n">ChangeHostBaudRateFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">707</span><span class="p">,</span>
+<span class="n">UnexpectedTcpError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">798</span><span class="p">,</span>
+<span class="n">UnexpectedSerialError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">799</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnPacketSyncException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnPacketSyncException</span></span><a class="headerlink" href="#vectornav.VnPacketSyncException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ReceivedByteBufferFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">801</span><span class="p">,</span>
+<span class="n">ParsingFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">802</span><span class="p">,</span>
+<span class="n">PacketQueueFull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">803</span><span class="p">,</span>
+<span class="n">PacketQueueOverrun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">804</span><span class="p">,</span>
+<span class="n">PacketQueueNull</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">805</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnFileException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnFileException</span></span><a class="headerlink" href="#vectornav.VnFileException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">FileDoesNotExist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">901</span><span class="p">,</span>
+<span class="n">FileOpenFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">902</span><span class="p">,</span>
+<span class="n">FileReadFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">903</span><span class="p">,</span>
+<span class="n">FileWriteFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">904</span><span class="p">,</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnUnknownException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnUnknownException</span></span><a class="headerlink" href="#vectornav.VnUnknownException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Unknown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFFFF</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnBLException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnBLException</span></span><a class="headerlink" href="#vectornav.VnBLException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">InvalidCommand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span>
+<span class="n">InvalidRecordType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span>
+<span class="n">InvalidByteCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span>
+<span class="n">InvalidMemoryAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span>
+<span class="n">CommError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span>
+<span class="n">InvalidHexFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span>
+<span class="n">DecryptionError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span>
+<span class="n">InvalidBlockCRC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span>
+<span class="n">InvalidProgramCRC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span>
+<span class="n">InvalidProgramSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0A</span><span class="p">,</span>
+<span class="n">MaxRetryCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0B</span><span class="p">,</span>
+<span class="n">Timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0C</span><span class="p">,</span>
+<span class="n">Reserved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0D</span><span class="p">,</span>
+
+<span class="c1">// Firmware update errors</span>
+<span class="n">EnterBootloaderFailed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">301</span><span class="p">,</span>
+<span class="n">IncompatibleVNX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">302</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectornav.VnCalException">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectornav.</span></span><span class="sig-name descname"><span class="pre">VnCalException</span></span><a class="headerlink" href="#vectornav.VnCalException" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Unknown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">                </span><span class="c1">// Indicates an unknown error occurred.</span>
+<span class="n">InvalidValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">           </span><span class="c1">// Indicates a provided value is not valid.</span>
+<span class="n">NotSupported</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">           </span><span class="c1">// Indicates the requested functionality is not supported.</span>
+<span class="n">NotFound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">               </span><span class="c1">// Indicates the requested item was not found.</span>
+<span class="n">InvalidOperation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">       </span><span class="c1">// Indicates an invalid operation was attempted.</span>
+<span class="n">DataNotElliptical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">      </span><span class="c1">//  Data set not elliptical.</span>
+<span class="n">IllConditioned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">         </span><span class="c1">// Algorithm had a bad condition.</span>
+<span class="n">ExceededMaxIterations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="c1">// Algorithm exceeded the number of iterations it is allowed.</span>
+<span class="n">InsufficientData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">       </span><span class="c1">// Not enough data points were provided.</span>
+<span class="n">ReceivedUnexpectedMessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="n">FailedEigenDecomposition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="n">MaximumMeasurementsRecorded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="n">IgnoredMeasurement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<div class="sphinx-toc sphinxglobaltoc">
+<h3><a href="../Documentation.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pages/migration_guide.html">Migration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/key_functionality.html">Key Functionality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pages/advanced_functionality.html">Advanced Functionality</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">VNSDK API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sensor_api.html">Class Sensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registers.html">Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composite_data_api.html">CompositeData</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exceptions API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+</ul>
+</div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="composite_data_api.html"
+                          title="Previous page">&larr; CompositeData</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="../plugins/index.html"
+                          title="Next page">&rarr; Plugins</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/exceptions_api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../plugins/index.html" title="Plugins"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="composite_data_api.html" title="CompositeData"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="../Documentation.html">VectorNav SDK  documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="index.html" >VNSDK API</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Exceptions API</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, VectorNav Technologies.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

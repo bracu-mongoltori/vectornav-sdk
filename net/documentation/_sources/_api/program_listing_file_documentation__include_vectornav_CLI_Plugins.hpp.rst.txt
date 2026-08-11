@@ -1,0 +1,35 @@
+
+.. _program_listing_file_documentation__include_vectornav_CLI_Plugins.hpp:
+
+Program Listing for File CLI_Plugins.hpp
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_documentation__include_vectornav_CLI_Plugins.hpp>` (``documentation\_include\vectornav\CLI_Plugins.hpp``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VN_CLI_PLUGINS_HPP_
+   #define VN_CLI_PLUGINS_HPP_
+   
+   #if (__CALIBRATION__)
+   #include "CLI_Calibration.hpp"
+   #endif
+   #if (__DATA_EXPORT__)
+   #include "CLI_DataExport.hpp"
+   #endif
+   #if (__FIRMWARE_PROGRAMMER__)
+   #include "CLI_FirmwareProgrammer.hpp"
+   #endif
+   #if (__REGISTER_SCAN__)
+   #include "CLI_RegisterScan.hpp"
+   #endif
+   #if (__LOGGER__)
+   #include "CLI_Logger.hpp"
+   #endif
+   #if (__MATH__)
+   #include "CLI_Math.hpp"
+   #endif
+   
+   #endif  // VN_CLI_PLUGINS_HPP_

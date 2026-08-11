@@ -1,0 +1,90 @@
+
+Exceptions API
+##############
+
+These exception classes are thrown when a corresponding error code is returned from native code.
+
+.. py:class:: vectornav.VnException
+
+        This is the top-level exception class used by the SDK.
+
+.. py:class:: vectornav.VnSynchronousException
+
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // SynchronousErrors
+   :end-before: // AsynchronousErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnAsynchronousException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // AsynchronousErrors
+   :end-before: // CommandProcessorErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnCommandProcessorException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // CommandProcessorErrors
+   :end-before: // SensorErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnSensorException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // SensorErrors
+   :end-before: // SerialErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnSerialException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // SerialErrors
+   :end-before: // PacketSyncErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnPacketSyncException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // PacketSyncErrors
+   :end-before: // FileErrors
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnFileException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // FileErrors
+   :end-before: // Unknown
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnUnknownException
+.. literalinclude:: ../../../cpp/include/vectornav/Interface/Errors.hpp
+   :language: cpp
+   :start-after: // Unknown
+   :end-before: };
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnBLException
+.. literalinclude:: ../../../cpp/plugins/FirmwareProgrammer/include/vectornav/FirmwareProgrammerErrors.hpp
+   :language: cpp
+   :start-after: None = 0
+   :end-before: };
+   :dedent: 4
+
+
+.. py:class:: vectornav.VnCalException
+.. literalinclude:: ../../../cpp/plugins/Calibration/include/vectornav/CalError.hpp
+   :language: cpp
+   :start-after: None = 0
+   :end-before: };
+   :dedent: 4
+
